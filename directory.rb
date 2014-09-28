@@ -1,11 +1,22 @@
 #put students into array
 students = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
-#first, we print the list of students
-puts "The students of my cohort at Makers Academy"
-"------------------"
-#now print them 
-students.each do |student|
-	puts student
+
+def print_header
+	puts "The students of my cohort at Makers Academy"
+	"------------------"
 end
-#then we print total
-puts "Overall, we have #{students.length} prospective students"
+
+def print(names) 
+	names.each do |name|
+		puts name
+	end
+end
+
+def print_footer(names)
+	puts "Overall, we have #{names.length} prospective students"
+end
+
+#lets call this methods
+print_header
+print(students)
+print_footer(students)
