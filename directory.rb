@@ -1,21 +1,21 @@
-#put students into array
-students = [
-	{:name => 1, :cohort => :october},
-	{:name => 2, :cohort => :october},
-	{:name => 3, :cohort => :october},
-	{:name => 4, :cohort => :october},
-	{:name => 5, :cohort => :october},
-	{:name => 6, :cohort => :october},
-	{:name => 7, :cohort => :october},
-	{:name => 8, :cohort => :october},
-	{:name => 9, :cohort => :october},
-	{:name => 10, :cohort => :october},
-	{:name => 11, :cohort => :october},
-	{:name => 12, :cohort => :october},
-	{:name => 13, :cohort => :october},
-	{:name => 14, :cohort => :october},
-	{:name => 15, :cohort => :october}
-]
+# create interactive input user method
+def input_students
+	puts "Please enter the names of the students"
+	puts "To finish, just hit return twice"
+	# let's create an empty array
+	students = []
+	# get name
+	name = gets.chomp
+	while !name.empty? do
+		# add student hash to array
+		students << {:name => name, :cohort => :october}
+		puts "Now we have #{students.length} students"
+		# get another name from the user
+		name = gets.chomp
+	end
+	# return array of students
+	students
+end
 
 def print_header
 	puts "The students of my cohort at Makers Academy"
@@ -33,6 +33,7 @@ def print_footer(names)
 end
 
 #lets call this methods
+students = input_students
 print_header
 print(students)
 print_footer(students)
