@@ -1,14 +1,32 @@
 # create interactive input user method
+
+# put cohort value to a separate method, make new feature: notification about typo, 
+def input_cohort
+    puts "Enter your cohort(you can skip this step by pressing enter again, cohort will be set to default october):"
+    cohort = gets.chomp.to_sym
+    months = [:january, :february, :march, :april, :may, :june, :july, :august, :september, :october, :december]
+	if cohort == :""
+	    cohort = :october
+	elsif months.include?(cohort)
+	    nil
+	else
+		puts "Sorry, there maybe some mistake in your input."
+		# new input using recursive method
+		input_cohort
+	end
+	cohort
+end
+
 def input_students
 	puts "Please enter the names of the students".center(52, '-') 
 	puts "To finish, just hit return twice".center(46, '-')
 	# let's create an empty array
 	students = []
-	# get name
+	# get info
 	puts "Enter your name:"
 	name = gets.chomp
-	puts "Enter your cohort:"
-	month_cohort = gets.chomp.to_sym
+	# put 
+    cohort = input_cohort
 	puts "Enter your age:"
 	age = gets.chomp
 	puts "Enter your country of birth:"
@@ -18,7 +36,6 @@ def input_students
 	while !name.empty? do
 		# add student hash to array
 		# default value of cohort
-		cohort = :october if month_cohort == "" || month_cohort
 		students << {:name => name, :cohort => cohort, :age => age, :country_of_birth => country_of_birth,
 		:hobbies => hobbies}
 		output_form = "student" if students.length == 1 || "students"
@@ -36,14 +53,8 @@ def print_header
 end
 
 def print(students) 
-	#students.each do |student|
-		#puts "#{student[:name]} (#{student[:cohort]} cohort)"
-	#end
-	# rewrite with while method
-	x=0
-	while x < students.length
-		puts "#{students[x][:name]} (#{students[x][:cohort]} cohort) #{students[x][:age]}"
-		x += 1
+	students.each do |student|
+		puts "#{student[:name]} (#{student[:cohort]} cohort)"
 	end
 end
 
