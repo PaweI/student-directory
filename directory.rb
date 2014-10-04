@@ -85,7 +85,7 @@ end
 # print name start with input letter
 def print_first(students)
 	letter = gets.chomp
-	students.each do |student|
+	@students.each do |student|
 		if student[:name][0].upcase == letter.upcase
 			puts student[:name]
 		end
@@ -94,15 +94,41 @@ end
 
 # print name shorter than 12 characters
 def print_short(students)
-	students.each do |student|
+	@students.each do |student|
 		if student[:name].split.join("").length < 12
 			puts student[:name]
 		end
 	end
 end
 
+def interactive_menu
+	students = []
+	loop do 
+		# print the menu
+		puts "1. Input the students"
+		puts "2. Show the students"
+		puts "9. Exit"
+	    # read input and save into variable
+	    selection = gets.chomp
+	    # perfom user ask
+	    case selection
+	    when "1"
+	    	students = input_students
+	    when "2"
+	    	print_header
+	    	print(students)
+	    	print_footer(students)
+	    when "9"
+	    	exit # terminate program
+	    else "You input is incorrect, please try again"
+	    end
+	end
+end
+
 # lets call this methods
-students = input_students
-print_header
-print(students)
-print_footer(students)
+#students = input_students
+#print_header
+#print(students)
+#print_footer(students)
+
+interactive_menu
