@@ -4,7 +4,7 @@
 def input_cohort
     puts "Enter your cohort(you can skip this step by pressing enter again, cohort will be set to default october):"
     cohort = gets.chomp.to_sym
-    months = [:january, :february, :march, :april, :may, :june, :july, :august, :september, :october, :december]
+    months = [:january, :february, :march, :april, :may, :june, :july, :august, :september, :october, :november, :december]
 	if cohort == :""
 	    cohort = :october
 	elsif months.include?(cohort)
