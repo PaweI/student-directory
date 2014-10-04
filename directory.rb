@@ -2,7 +2,7 @@
 
 # put cohort value to a separate method, make new feature: notification about typo, 
 def input_cohort
-    puts "Enter your cohort(you can skip this step by pressing enter again, cohort will be set to default october):"
+    puts "Enter your cohort(you can skip this step by pressing enter again, cohort will be set to October):"
     cohort = gets.chomp.to_sym
     months = [:january, :february, :march, :april, :may, :june, :july, :august, :september, :october, :november, :december]
 	if cohort == :""
@@ -25,22 +25,26 @@ def input_students
 	# get info
 	puts "Enter your name:"
 	name = gets.chomp
-	# put 
-    cohort = input_cohort
-	puts "Enter your age:"
-	age = gets.chomp
-	puts "Enter your country of birth:"
-	country_of_birth = gets.chomp
-	puts "Write your hobbies, please:"
-	hobbies = gets.chomp
 	while !name.empty? do
+		cohort = input_cohort
+	    puts "Enter your age:"
+	    age = gets.chomp
+	    puts "Enter your country of birth:"
+        country_of_birth = gets.chomp
+        puts "Write your hobbies, please:"
+        hobbies = gets.chomp
 		# add student hash to array
 		# default value of cohort
 		students << {:name => name, :cohort => cohort, :age => age, :country_of_birth => country_of_birth,
 		:hobbies => hobbies}
-		output_form = "student" if students.length == 1 || "students"
-		puts "Now we have #{students.length} #{output_form}"
+		if students.length == 1
+			plural_form = "student"
+		else 
+			plural_form = "students"
+		end
+		puts "Now we have #{students.length} #{plural_form}"
 		# get another name from the user
+		puts "Enter your name:"
 		name = gets.chomp
 	end
 	# return array of students
