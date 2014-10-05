@@ -1,3 +1,5 @@
+@students = []
+
 def input_cohort
     puts "Enter your cohort(you can skip this step by pressing enter again, cohort will be set to October):"
     cohort = gets.chomp.to_sym
@@ -25,8 +27,6 @@ end
 def input_students
 	puts "Please enter the names of the students".center(52, '-') 
 	puts "To finish, just hit return twice".center(46, '-')
-	@students = []
-	# get info
 	puts "Enter your name:"
 	name = gets.chomp
 	while !name.empty? do
@@ -95,6 +95,7 @@ def print_menu
 	puts "1. Input the students"
 	puts "2. Show the students"
 	puts "3. Save the list of students"
+	puts "4. Load the list of students"
 	puts "9. Exit"
 end
 
@@ -114,6 +115,15 @@ def save_students
 	file.close
 end
 
+def load_students
+	file = File.open("students.csv", "r")
+	file.readlines.each do |line|
+		name, cohort = line.chomp.split(",")
+		@students << {:name => name, :cohort => cohort.to_sym}
+	end
+	file.close
+end
+
 def process(selection)
 	case selection
 	when "1"
@@ -122,6 +132,8 @@ def process(selection)
 	   	show_students
 	when "3"
 		save_students
+	when "4"
+		load_students
     when "9"
 	    exit # terminate program
 	else "You input is incorrect, please try again"
