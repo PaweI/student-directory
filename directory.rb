@@ -1,6 +1,3 @@
-# create interactive input user method
-
-# put cohort value to a separate method, make new feature: notification about typo, 
 def input_cohort
     puts "Enter your cohort(you can skip this step by pressing enter again, cohort will be set to October):"
     cohort = gets.chomp.to_sym
@@ -12,7 +9,6 @@ def input_cohort
 	    return cohort
 	else
 		puts "Sorry, there maybe some mistake in your input."
-		# new input using recursive method
 		input_cohort
 	end
 end
@@ -29,7 +25,6 @@ end
 def input_students
 	puts "Please enter the names of the students".center(52, '-') 
 	puts "To finish, just hit return twice".center(46, '-')
-	# let's create an empty array
 	@students = []
 	# get info
 	puts "Enter your name:"
@@ -42,8 +37,6 @@ def input_students
         country_of_birth = gets.chomp
         puts "Write your hobbies, please:"
         hobbies = gets.chomp
-		# add student hash to array
-		# default value of cohort
 		@students << {:name => name, :cohort => cohort, :age => age, :country_of_birth => country_of_birth,
 		:hobbies => hobbies}
 		puts "Now we have #{@students.length} #{plural_form(@students)}"
@@ -56,14 +49,11 @@ def input_students
 end
 
 def print_header
-	puts "The students of my cohort at Makers Academy"
+	puts "The students at Makers Academy"
 	puts "------------------"
 end
 
-def print(students) 
-	#students.each do |student|
-		#puts "#{student[:name]} (#{student[:cohort]} cohort)"
-	#end
+def print_students_list
 	cohorts = []
 	@students.each do |student|
 		cohorts << student[:cohort] if cohorts.include?(student[:cohort]) != true
@@ -78,8 +68,8 @@ def print(students)
 	end
 end
 
-def print_footer(names)
-	puts "Overall, we have #{names.length} great #{plural_form(@students)}"
+def print_footer
+	puts "Overall, we have #{@students.length} great #{plural_form(@students)}"
 end
 
 # print name start with input letter
@@ -101,34 +91,35 @@ def print_short(students)
 	end
 end
 
-def interactive_menu
-	students = []
-	loop do 
-		# print the menu
-		puts "1. Input the students"
-		puts "2. Show the students"
-		puts "9. Exit"
-	    # read input and save into variable
-	    selection = gets.chomp
-	    # perfom user ask
-	    case selection
-	    when "1"
-	    	students = input_students
-	    when "2"
-	    	print_header
-	    	print(students)
-	    	print_footer(students)
-	    when "9"
-	    	exit # terminate program
-	    else "You input is incorrect, please try again"
-	    end
+def print_menu
+	puts "1. Input the students"
+	puts "2. Show the students"
+	puts "9. Exit"
+end
+
+def show_students
+	print_header
+	print_students_list
+	print_footer
+end
+
+def process(selection)
+	case selection
+	when "1"
+	    input_students
+    when "2"
+	   	show_students
+    when "9"
+	    exit # terminate program
+	else "You input is incorrect, please try again"
 	end
 end
 
-# lets call this methods
-#students = input_students
-#print_header
-#print(students)
-#print_footer(students)
+def interactive_menu
+	loop do 
+		print_menu
+		process(gets.chomp)
+	end
+end
 
 interactive_menu
