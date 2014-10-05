@@ -2,7 +2,7 @@
 
 def input_cohort
     puts "Enter your cohort(you can skip this step by pressing enter again, cohort will be set to October):"
-    cohort = gets.chomp.to_sym
+    cohort = STDIN.gets.chomp.to_sym
     months = [:january, :february, :march, :april, :may, :june, :july, :august, :september, :october, :november, :december]
 	if cohort == :""
 		cohort = :october
@@ -28,21 +28,21 @@ def input_students
 	puts "Please enter the names of the students".center(52, '-') 
 	puts "To finish, just hit return twice".center(46, '-')
 	puts "Enter your name:"
-	name = gets.chomp
+	name = STDIN.gets.chomp
 	while !name.empty? do
 		cohort = input_cohort
 	    puts "Enter your age:"
-	    age = gets.chomp
+	    age = STDIN.gets.chomp
 	    puts "Enter your country of birth:"
-        country_of_birth = gets.chomp
+        country_of_birth = STDIN.gets.chomp
         puts "Write your hobbies, please:"
-        hobbies = gets.chomp
+        hobbies = STDIN.gets.chomp
 		@students << {:name => name, :cohort => cohort, :age => age, :country_of_birth => country_of_birth,
 		:hobbies => hobbies}
 		puts "Now we have #{@students.length} #{plural_form(@students)}"
 		# get another name from the user
 		puts "Enter your name:"
-		name = gets.chomp
+		name = STDIN.gets.chomp
 	end
 	# return array of students
 	@students
@@ -73,8 +73,9 @@ def print_footer
 end
 
 # print name start with input letter
-def print_first(students)
-	letter = gets.chomp
+def print_first
+	puts "Enter letter, please:"
+	letter = STDIN.gets.chomp
 	@students.each do |student|
 		if student[:name][0].upcase == letter.upcase
 			puts student[:name]
@@ -96,6 +97,7 @@ def print_menu
 	puts "2. Show the students"
 	puts "3. Save the list of students"
 	puts "4. Load the list of students"
+	puts "5. Find student by first letter"
 	puts "9. Exit"
 end
 
@@ -115,13 +117,25 @@ def save_students
 	file.close
 end
 
-def load_students
-	file = File.open("students.csv", "r")
+def load_students(filename = "students.csv")
+	file = File.open(filename, "r")
 	file.readlines.each do |line|
 		name, cohort = line.chomp.split(",")
 		@students << {:name => name, :cohort => cohort.to_sym}
 	end
 	file.close
+end
+
+def try_load_students
+	filename = ARGV.first
+	return if filename.nil?
+	if File.exists?(filename)
+		load_students(filename)
+		puts "Loaded #{@students.length} from #{filename}"
+	else
+		puts "Sorry, #{filename} doesn't exist."
+		exit
+	end
 end
 
 def process(selection)
@@ -134,6 +148,8 @@ def process(selection)
 		save_students
 	when "4"
 		load_students
+	when "5"
+		print_first
     when "9"
 	    exit # terminate program
 	else "You input is incorrect, please try again"
@@ -143,8 +159,9 @@ end
 def interactive_menu
 	loop do 
 		print_menu
-		process(gets.chomp)
+		process(STDIN.gets.chomp)
 	end
 end
 
+try_load_students
 interactive_menu
