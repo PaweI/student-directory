@@ -1,7 +1,7 @@
 @students = []
 
 def input_cohort
-    puts "Enter your cohort(you can skip this step by pressing enter again, cohort will be set to October):"
+    puts "Enter your cohort(you can skip this step by pressing enter again, cohort will be set to 'october'):"
     cohort = STDIN.gets.chomp.to_sym
     months = [:january, :february, :march, :april, :may, :june, :july, :august, :september, :october, :november, :december]
 	if cohort == :""
@@ -23,6 +23,10 @@ def plural_form(students)
 	end
 end
 
+def add_student(name, cohort)
+	@students << {:name => name, :cohort => cohort.to_sym}
+end
+
 
 def input_students
 	puts "Please enter the names of the students".center(52, '-') 
@@ -32,19 +36,12 @@ def input_students
 	while !name.empty? do
 		cohort = input_cohort
 	    puts "Enter your age:"
-	    age = STDIN.gets.chomp
-	    puts "Enter your country of birth:"
-        country_of_birth = STDIN.gets.chomp
-        puts "Write your hobbies, please:"
-        hobbies = STDIN.gets.chomp
-		@students << {:name => name, :cohort => cohort, :age => age, :country_of_birth => country_of_birth,
-		:hobbies => hobbies}
+	    add_student(name, cohort)
 		puts "Now we have #{@students.length} #{plural_form(@students)}"
 		# get another name from the user
 		puts "Enter your name:"
 		name = STDIN.gets.chomp
 	end
-	# return array of students
 	@students
 end
 
@@ -108,7 +105,11 @@ def show_students
 end
 
 def save_students
-	file = File.open("students.csv", "w")
+	puts "Name your students file(you can skip this step, 'students' will be default name):"
+	name_file = STDIN.gets.chomp
+	name_file = "students" if name_file.length == 0
+    file_with_students = name_file + ".csv"
+	file = File.open(file_with_students, "w")
 	@students.each do |student|
 		student_data = [student[:name], student[:cohort]]
 		csv_line = student_data.join(",")
@@ -117,11 +118,14 @@ def save_students
 	file.close
 end
 
-def load_students(filename = "students.csv")
+def load_students(filename=nil)
+	puts "Enter filename please (press enter to choose default 'students.csv':"
+	filename = STDIN.gets.chomp
+    filename = "students.csv" if filename.length == 0
 	file = File.open(filename, "r")
 	file.readlines.each do |line|
 		name, cohort = line.chomp.split(",")
-		@students << {:name => name, :cohort => cohort.to_sym}
+		add_student(name, cohort)
 	end
 	file.close
 end
