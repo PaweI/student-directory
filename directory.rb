@@ -1,3 +1,4 @@
+require 'csv'
 @students = []
 
 def input_cohort
@@ -81,7 +82,7 @@ def print_first
 end
 
 # print name shorter than 12 characters
-def print_short(students)
+def print_short
 	@students.each do |student|
 		if student[:name].split.join("").length < 12
 			puts student[:name]
@@ -109,25 +110,21 @@ def save_students
 	name_file = STDIN.gets.chomp
 	name_file = "students" if name_file.length == 0
     file_with_students = name_file + ".csv"
-	file = File.open(file_with_students, "w")
-	@students.each do |student|
-		student_data = [student[:name], student[:cohort]]
-		csv_line = student_data.join(",")
-		file.puts csv_line
+	CSV.open(file_with_students, "wb") do |csv_line|
+		@students.each do |student|
+        csv_line << [student[:name], student[:cohort]]
+        end
 	end
-	file.close
 end
 
 def load_students(filename=nil)
 	puts "Enter filename please (press enter to choose default 'students.csv':"
 	filename = STDIN.gets.chomp
     filename = "students.csv" if filename.length == 0
-	file = File.open(filename, "r")
-	file.readlines.each do |line|
-		name, cohort = line.chomp.split(",")
+	CSV.foreach(filename) do |line|
+		name, cohort = line[0], line[1]
 		add_student(name, cohort)
 	end
-	file.close
 end
 
 def try_load_students
@@ -154,8 +151,8 @@ def process(selection)
 		load_students
 	when "5"
 		print_first
-    when "9"
-	    exit # terminate program
+    when "9" # because more functionality might be added
+	    exit 
 	else "You input is incorrect, please try again"
 	end
 end
