@@ -7,5 +7,7 @@ How to use
 ----------
 
 ```shell
-ruby directory.rb or run ./directory.rb (if permission denied - input chmod u+x directory.rb)
+ruby directory.rb or
+
+./directory.rb 
 ```  
